@@ -1,0 +1,19 @@
+# package directories
+node_modules
+jspm_packages
+
+# build-time generated
+.esbuild
+dist
+
+# run-time generated
+store/*
+
+# OS stuff
+
+# IDE/tool stuff
+.idea
+.nvmrc
+
+# Secrets
+src/private
