@@ -24,9 +24,3 @@ export function getArgumentObject():Object {
   }
   return result;
 }
-
-export function outputStatusLine(percentComplete:number, currentTask:string) {
-  const percentCompleteText = percentComplete.toFixed(0).padStart(3);
-  const statusLine = `\033[2K\r${percentCompleteText}% ${currentTask}                      `;
-  process.stdout.write(statusLine);
-}
