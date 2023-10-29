@@ -21,7 +21,6 @@ function _getVerifiedFilepath(key:string, fileMustExist = false):string|null {
   const filePath = `${BASE_PATH}/${key}`;
   if (!fileMustExist) _createDirectoriesAsNeeded(filePath);
   if(fileMustExist && !fs.existsSync(filePath)) {
-    console.error('File not found: ' + filePath);
     return null;
   }
   return filePath;

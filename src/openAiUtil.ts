@@ -31,6 +31,8 @@ async function _ask(model:string, question:string):Promise<string> {
   let completion:OpenAI.Chat.Completions.ChatCompletion|null = null;
   let retryDelay = 4 + (Math.random() * 2 - 1); // Random added to avoid simultaneous retries.
   const MAX_RETRIES_AFTER_RATE_LIMIT = 8;
+  
+  console.log('\nAsking:', question);
   for(let i = 0; i < MAX_RETRIES_AFTER_RATE_LIMIT; ++i) {
     try {
       completion = await api.chat.completions.create({
@@ -53,7 +55,8 @@ async function _ask(model:string, question:string):Promise<string> {
     console.error(completion);
     throw Error('No response text from OpenAI.');
   }
-  
+
+  console.log('\nResponse:', responseText);
   return responseText;
 }
 
