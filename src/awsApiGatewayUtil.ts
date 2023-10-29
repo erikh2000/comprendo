@@ -21,8 +21,6 @@ export async function callApiGateway(resource:string, method:string, body:Object
   const credentials = { accessKeyId: COMPRENDO_ACCESS_KEY_ID, secretAccessKey: COMPRENDO_SECRET_ACCESS_KEY };
   aws4.sign(request, credentials);
   
-  console.log({request});
-  console.log({endpoint});
   const response = await fetch(endpoint, {
     method: request.method,
     headers: request.headers,
