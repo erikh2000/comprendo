@@ -16,15 +16,21 @@ const STORY_WORD_COUNT = 100;
 const UNCOMMON_WORD_COUNT = 8;
 const QUESTION_COUNT = 5;
 
-export async function generateComprehensionLesson(topic:string, language:Language, cefrLevel:CefrLevel, includeVocabulary?:string[], includeGrammar?:string):Promise<ComprehensionLesson> {
+async function _generateWordExplanations(words:string[], language:Language, cefrLevel:CefrLevel):Promise<WordExplanations> {
+  const wordExplanations:WordExplanations = {};
+  for(let wordI = 0; wordI < words.length; ++wordI) {
+    const word = words[wordI];
+    wordExplanations[word] = await generateWordExplanation(word, language, cefrLevel);
+  }
+  return wordExplanations;
+}
+
+export async function generateComprehensionLesson(topic:string, language:Language, cefrLevel:CefrLevel, 
+    includeVocabulary?:string[], includeGrammar?:string):Promise<ComprehensionLesson> {
   const name = await generateLessonName(topic, language, cefrLevel);
   const story  = await generateStory(topic, STORY_WORD_COUNT, language, cefrLevel, includeVocabulary, includeGrammar);
   const uncommonWords = await findLeastCommonWords(story, UNCOMMON_WORD_COUNT, language, cefrLevel);
-  const wordExplanationArray = await Promise.all(uncommonWords.map(uncommonWord => generateWordExplanation(uncommonWord, language, cefrLevel)));
-  const wordExplanations:WordExplanations = {};
-  for(let i = 0; i < uncommonWords.length; i++) {
-    wordExplanations[uncommonWords[i]] = wordExplanationArray[i];
-  }
+  const wordExplanations = await _generateWordExplanations(uncommonWords, language, cefrLevel);
   const questions = await generateComprehensionQuestions(story, QUESTION_COUNT, language, cefrLevel);
   
   return {
