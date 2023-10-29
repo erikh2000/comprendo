@@ -37,9 +37,8 @@ async function _handleGenerateCommand(a:any) {
   const includeGrammar = a.includeGrammar;
   console.log(`Generating lesson for topic: ${topic}, language: ${language}, CEFR level: ${cefrLevel}, include vocabulary: ${includeVocabulary}, include grammar: ${includeGrammar}.`);
   const comprehensionLesson = await generateComprehensionLesson(topic, language, cefrLevel, includeVocabulary, includeGrammar);
-  const speech = await generateSpeechForComprehensionLesson(comprehensionLesson, language);
-  console.log(comprehensionLesson);
-  console.log(speech);
+  const speechUrls = await generateSpeechForComprehensionLesson(comprehensionLesson, language);
+  console.log(`Lesson has been published at ${speechUrls.lessonUrl}.`);
 }
 
 function _handleHelp() {
@@ -52,7 +51,6 @@ async function doIt(){
   init();
   try {
     const a:any = getArgumentObject();
-    console.log(a);
     if (!a.command) throw new InvalidCommandLineArgsError('No command provided. "comprendo help" to list commands.');
     switch(a.command) {
       case 'generate': await _handleGenerateCommand(a); break;
